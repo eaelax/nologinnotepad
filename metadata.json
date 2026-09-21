@@ -1,6 +1,0 @@
-{
-  "name": "NoLoginNotepad",
-  "description": "NoLoginNotepad — A fast, distraction-free, privacy-focused online notepad with instant local IndexedDB auto-saving, Markdown support, and offline capabilities without any login.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
