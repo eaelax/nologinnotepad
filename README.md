@@ -88,4 +88,4 @@ Configured via `next.config.ts`:
 ---
 
 ## 📚 Complete Launch & SEO Blueprint
-For in-depth deployment steps and a detailed checklist to rank on page 1 of Google and Bing, see [`LAUNCH_AND_SEO_GUIDE.md`](./LAUNCH_AND_SEO_GUIDE.md). 
+For in-depth deployment steps and a detailed checklist to rank on page 1 of Google and Bing, see [`LAUNCH_AND_SEO_GUIDE.md`](./LAUNCH_AND_SEO_GUIDE.md).
