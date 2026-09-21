@@ -1,4 +1,4 @@
-# NoLoginNotepad — Fast, Free Online Notepad (Ready for GitHub & Cloudflare)
+# NoLoginNotepad — Fast, Free Online Notepad
 
 A fast, distraction-free, 100% private online notepad with instant local IndexedDB autosaving, Markdown support, realistic notebook stationery, and offline PWA capabilities—without any accounts, logins, or tracking.
 
