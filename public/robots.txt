@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://www.nologinnotepad.com/sitemap.xml
+Host: https://www.nologinnotepad.com

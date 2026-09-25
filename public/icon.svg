@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Solid Black Rounded Squircle Tile -->
+  <rect width="512" height="512" rx="116" fill="#000000" />
+
+  <!-- Outer Rounded Notepad Frame: Bold White Stroke -->
+  <rect 
+    x="114" 
+    y="107" 
+    width="284" 
+    height="320" 
+    rx="58" 
+    fill="none" 
+    stroke="#ffffff" 
+    stroke-width="38" 
+    stroke-linejoin="round"
+  />
+
+  <!-- 3 Top Binder Rings: White Capsules crossing top edge -->
+  <rect x="162" y="67" width="34" height="78" rx="17" fill="#ffffff" />
+  <rect x="239" y="67" width="34" height="78" rx="17" fill="#ffffff" />
+  <rect x="316" y="67" width="34" height="78" rx="17" fill="#ffffff" />
+
+  <!-- 3 Horizontal Ruled Lines inside Notepad -->
+  <rect x="170" y="185" width="172" height="32" rx="16" fill="#ffffff" />
+  <rect x="170" y="251" width="172" height="32" rx="16" fill="#ffffff" />
+  <rect x="170" y="317" width="172" height="32" rx="16" fill="#ffffff" />
+</svg>

@@ -1,0 +1,350 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
+@layer base {
+  :root,
+  [data-theme="light"] {
+    color-scheme: light;
+    --bg-app: #f3f4f6;
+    --bg-paper: #ffffff;
+    --bg-toolbar: #ffffff;
+    --bg-card: #e5e7eb;
+    --bg-card-selected: #d1d5db;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --border-subtle: #e5e7eb;
+    --border-selected: #111827;
+    --btn-primary-bg: #111827;
+    --btn-primary-text: #ffffff;
+    --editor-line: rgba(0, 0, 0, 0.08);
+    --pattern-dot-color: rgba(0, 0, 0, 0.22);
+    --pattern-line-subtle: rgba(0, 0, 0, 0.04);
+    --journal-margin: rgba(239, 68, 68, 0.42);
+    --accent-btn: #111827;
+    --accent-btn-text: #ffffff;
+    --paper-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 16px 36px -4px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Dark Theme */
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --bg-app: #0e0f13;
+    --bg-paper: #181a22;
+    --bg-toolbar: #181a22;
+    --bg-card: #222631;
+    --bg-card-selected: #2d3342;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-subtle: #2d3342;
+    --border-selected: #f1f5f9;
+    --btn-primary-bg: #f1f5f9;
+    --btn-primary-text: #121316;
+    --editor-line: rgba(255, 255, 255, 0.09);
+    --pattern-dot-color: rgba(255, 255, 255, 0.25);
+    --pattern-line-subtle: rgba(255, 255, 255, 0.04);
+    --journal-margin: rgba(248, 113, 113, 0.45);
+    --accent-btn: #f1f5f9;
+    --accent-btn-text: #121316;
+    --paper-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 16px 36px -4px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  /* Sepia Theme */
+  [data-theme="sepia"] {
+    color-scheme: light;
+    --bg-app: #ebdcc2;
+    --bg-paper: #fbf7ec;
+    --bg-toolbar: #eedcc0;
+    --bg-card: #e4d1b3;
+    --bg-card-selected: #d7c19f;
+    --text-primary: #3d2f1d;
+    --text-secondary: #7e6749;
+    --border-subtle: #d2bf9f;
+    --border-selected: #3d2f1d;
+    --btn-primary-bg: #3d2f1d;
+    --btn-primary-text: #fcf8ef;
+    --editor-line: rgba(120, 85, 40, 0.13);
+    --pattern-dot-color: rgba(120, 85, 40, 0.28);
+    --pattern-line-subtle: rgba(120, 85, 40, 0.06);
+    --journal-margin: rgba(215, 75, 75, 0.45);
+    --accent-btn: #3d2f1d;
+    --accent-btn-text: #fcf8ef;
+    --paper-shadow: 0 4px 6px -1px rgba(60, 40, 15, 0.08), 0 12px 28px -4px rgba(60, 40, 15, 0.12), 0 0 0 1px rgba(120, 85, 40, 0.1);
+  }
+
+  body {
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Theme Utilities */
+.bg-app-theme {
+  background-color: var(--bg-app) !important;
+}
+
+.bg-paper-theme {
+  background-color: var(--bg-paper) !important;
+}
+
+.bg-toolbar-theme {
+  background-color: var(--bg-toolbar) !important;
+}
+
+.bg-card-theme {
+  background-color: var(--bg-card) !important;
+}
+
+.bg-card-selected-theme {
+  background-color: var(--bg-card-selected) !important;
+}
+
+.text-primary-theme {
+  color: var(--text-primary) !important;
+}
+
+.text-secondary-theme {
+  color: var(--text-secondary) !important;
+}
+
+.border-subtle-theme {
+  border-color: var(--border-subtle) !important;
+}
+
+.border-selected-theme {
+  border-color: var(--border-selected) !important;
+}
+
+.btn-primary-theme {
+  background-color: var(--btn-primary-bg) !important;
+  color: var(--btn-primary-text) !important;
+}
+
+/* Typography font classes */
+.font-sans-notepad {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.font-serif-notepad {
+  font-family: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+}
+
+.font-mono-notepad {
+  font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.font-literary-notepad {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+}
+
+.font-casual-notepad {
+  font-family: "Caveat", "Comic Sans MS", "Bradley Hand", "Chilanka", cursive, sans-serif;
+}
+
+.font-dyslexic-notepad {
+  font-family: "Atkinson Hyperlegible", "Trebuchet MS", Arial, sans-serif;
+}
+
+/* Page Background Styles - All mathematically aligned with font baseline and line height */
+.page-style-blank {
+  background-image: none;
+}
+
+.page-style-lined {
+  background-image: linear-gradient(to bottom, var(--editor-line) 1px, transparent 1px);
+  background-size: 100% var(--notepad-line-height, 28px);
+  background-position: 0 var(--notepad-line-offset-y, 51px);
+  background-attachment: local;
+}
+
+.page-style-journal {
+  background-image:
+    linear-gradient(to right, transparent 48px, var(--journal-margin) 48px, var(--journal-margin) 50px, transparent 50px),
+    linear-gradient(to bottom, var(--editor-line) 1px, transparent 1px);
+  background-size: 100% 100%, 100% var(--notepad-line-height, 28px);
+  background-position: 0 0, 0 var(--notepad-line-offset-y, 51px);
+  background-attachment: local;
+}
+
+.page-style-grid {
+  background-image:
+    linear-gradient(to right, var(--editor-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--editor-line) 1px, transparent 1px);
+  background-size: var(--notepad-line-height, 28px) var(--notepad-line-height, 28px);
+  background-position: 0 var(--notepad-line-offset-y, 51px);
+  background-attachment: local;
+}
+
+.paper-sheet-container {
+  box-shadow: var(--paper-shadow);
+  border: 1px solid var(--border-subtle) !important;
+  background-color: var(--bg-paper);
+}
+
+.page-style-dotted {
+  background-image: radial-gradient(circle 1.3px at 50% 0px, var(--pattern-dot-color) 100%, transparent 0);
+  background-size: 24px var(--notepad-line-height, 28px);
+  background-position: 0 var(--notepad-line-offset-y, 51px);
+  background-attachment: local;
+}
+
+.page-style-graph {
+  background-image:
+    linear-gradient(to right, var(--editor-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--editor-line) 1px, transparent 1px),
+    linear-gradient(to right, var(--pattern-line-subtle) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--pattern-line-subtle) 1px, transparent 1px);
+  background-size:
+    var(--notepad-line-height, 28px) var(--notepad-line-height, 28px),
+    var(--notepad-line-height, 28px) var(--notepad-line-height, 28px),
+    calc(var(--notepad-line-height, 28px) / 2) calc(var(--notepad-line-height, 28px) / 2),
+    calc(var(--notepad-line-height, 28px) / 2) calc(var(--notepad-line-height, 28px) / 2);
+  background-position:
+    0 var(--notepad-line-offset-y, 51px),
+    0 var(--notepad-line-offset-y, 51px),
+    0 var(--notepad-line-offset-y, 51px),
+    0 var(--notepad-line-offset-y, 51px);
+  background-attachment: local;
+}
+
+.page-style-minimal {
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* ContentEditable Editor Styling */
+.notepad-editable {
+  outline: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.notepad-editable:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-secondary);
+  opacity: 0.45;
+  pointer-events: none;
+  display: block;
+}
+
+.notepad-editable mark {
+  color: #111827 !important;
+  padding: 1px 3px;
+  border-radius: 3px;
+}
+
+.notepad-editable mark * {
+  color: #111827 !important;
+}
+
+[data-theme="dark"] .notepad-editable mark,
+.dark .notepad-editable mark,
+[data-theme="dark"] .notepad-editable mark *,
+.dark .notepad-editable mark * {
+  color: #111827 !important;
+}
+
+.notepad-editable [style*="background-color"]:not([style*="transparent"]):not([style*="rgba(0, 0, 0, 0)"]) {
+  color: #111827 !important;
+}
+
+[data-theme="dark"] .notepad-editable [style*="background-color"]:not([style*="transparent"]):not([style*="rgba(0, 0, 0, 0)"]),
+.dark .notepad-editable [style*="background-color"]:not([style*="transparent"]):not([style*="rgba(0, 0, 0, 0)"]) {
+  color: #111827 !important;
+}
+
+/* Checkbox mark styling: bold and green */
+.notepad-editable mark:empty {
+  display: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: transparent !important;
+}
+
+/* Bold and green checked checkbox character ☑ and uniform box sizing */
+.notepad-editable {
+  /* Enhance readability and smooth fonts */
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Style checkboxes specifically - ensure size matches surrounding text */
+.notepad-editable [data-checked="true"],
+.notepad-checkbox-checked {
+  color: #16a34a !important;
+  font-weight: 800 !important;
+  font-size: 1.15em !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+  vertical-align: -0.05em !important;
+}
+
+.notepad-checkbox-unchecked {
+  font-size: 1.15em !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+  vertical-align: -0.05em !important;
+  opacity: 0.85;
+}
+
+/* Hide Next.js development indicator / bottom-left icon */
+nextjs-portal,
+[data-nextjs-toast],
+[data-nextjs-dev-indicator],
+#nextjs-dev-overlay,
+div[data-nextjs-dev-indicator],
+div[data-nextjs-toast-wrapper],
+div[data-nextjs-dialog] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.notepad-editable h1 {
+  font-size: 1.35em;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+.notepad-editable h2 {
+  font-size: 1.18em;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 0.15em;
+  margin-bottom: 0.15em;
+}
+
+.notepad-editable code {
+  background: var(--bg-card);
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+  border: 1px solid var(--border-subtle);
+}
+
