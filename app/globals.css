@@ -1,0 +1,853 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
+@theme {
+  --color-paper-theme: var(--bg-paper);
+  --color-app-theme: var(--bg-app);
+  --color-card-theme: var(--bg-card);
+  --color-card-selected-theme: var(--bg-card-selected);
+  --color-primary-theme: var(--text-primary);
+  --color-secondary-theme: var(--text-muted);
+  --color-subtle-theme: var(--border-subtle);
+  --color-strong-theme: var(--border-strong);
+  --color-selected-theme: var(--selected-bg);
+}
+
+/* ==========================================================================
+   1. ELEVATED DIGITAL STATIONERY THEME SYSTEM (LIGHT & DARK)
+   ========================================================================== */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Workspace & Paper Surfaces */
+  --bg-level0: #F6F7F9;               /* Subtle Workspace Canvas Background */
+  --bg-level1: #FFFFFF;               /* Pure Crisp Paper Sheet Surface */
+  --bg-level2: #F1F5F9;               /* Subtle Control / Inactive Tab Surface */
+  --bg-level3: #E2E8F0;               /* Tactile Hover Surface */
+
+  --bg-page: var(--bg-level0);
+  --bg-surface: var(--bg-level1);
+  --bg-secondary: var(--bg-level2);
+  --hover-tint: var(--bg-level3);
+  --bg-palette: #FFFFFF;
+  --bg-dropdown: #FFFFFF;
+
+  /* Typography Colors */
+  --text-primary: #0F172A;            /* Deep Slate Ink */
+  --text-muted: #64748B;              /* Balanced Muted Slate */
+
+  /* Crisp 1px Structural Borders */
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.14);
+  --border-input: rgba(15, 23, 42, 0.12);
+
+  /* Accent & Selection (Deep Indigo / Royal Blue) */
+  --brand-primary: #4F46E5;
+  --selected-bg: #EEF2FF;
+  --selected-text: #4338CA;
+
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+
+  --modal-backdrop: rgba(15, 23, 42, 0.45);
+
+  /* Helper Theme Aliases */
+  --bg-app: var(--bg-page);
+  --bg-paper: var(--bg-surface);
+  --bg-toolbar: rgba(255, 255, 255, 0.88);
+  --bg-card: var(--bg-surface);
+  --bg-card-selected: var(--selected-bg);
+  --btn-active-bg: var(--selected-bg);
+  --btn-active-text: var(--selected-text);
+
+  /* Tab Contrast Variables */
+  --tab-inactive-bg: #eef2f6;
+  --tab-inactive-text: #64748b;
+  --tab-active-bg: #ffffff;
+  --tab-active-text: #0f172a;
+
+  /* Stationery Ruled Line Tokens */
+  --paper-line-color: rgba(15, 23, 42, 0.085);
+  --paper-grid-color: rgba(15, 23, 42, 0.065);
+  --paper-dot-color: rgba(15, 23, 42, 0.18);
+  --paper-margin-color: rgba(244, 63, 94, 0.35);
+
+  /* Sheet Elevation Shadow */
+  --sheet-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 12px 36px -8px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="dark"],
+.dark,
+body.dark-mode {
+  color-scheme: dark;
+
+  /* Dark Workspace & Obsidian Paper Surfaces */
+  --bg-level0: #090B10;               /* Deep Carbon Workspace Canvas */
+  --bg-level1: #11141C;               /* Elevated Dark Stationery Sheet */
+  --bg-level2: #1A1F2B;               /* Subtle Control / Inactive Tab Surface */
+  --bg-level3: #252B3B;               /* Tactile Dark Hover Surface */
+
+  --bg-page: var(--bg-level0);
+  --bg-surface: var(--bg-level1);
+  --bg-secondary: var(--bg-level2);
+  --hover-tint: var(--bg-level3);
+  --bg-palette: #181C26;
+  --bg-dropdown: #181C26;
+
+  /* Typography Colors */
+  --text-primary: #F8FAFC;            /* Crisp Alabaster White */
+  --text-muted: #94A3B8;              /* Soft Muted Slate */
+
+  /* Crisp 1px Structural Borders */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-input: rgba(255, 255, 255, 0.12);
+
+  /* Accent & Selection */
+  --brand-primary: #6366F1;
+  --selected-bg: rgba(99, 102, 241, 0.18);
+  --selected-text: #A5B4FC;
+
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+
+  --modal-backdrop: rgba(0, 0, 0, 0.72);
+
+  /* Helper Theme Aliases */
+  --bg-app: var(--bg-page);
+  --bg-paper: var(--bg-surface);
+  --bg-toolbar: rgba(17, 20, 28, 0.88);
+  --bg-card: var(--bg-surface);
+  --bg-card-selected: var(--selected-bg);
+  --btn-active-bg: var(--selected-bg);
+  --btn-active-text: var(--selected-text);
+
+  /* Tab Contrast Variables */
+  --tab-inactive-bg: #181d28;
+  --tab-inactive-text: #94a3b8;
+  --tab-active-bg: #272f40;
+  --tab-active-text: #f8fafc;
+
+  /* Stationery Ruled Line Tokens */
+  --paper-line-color: rgba(255, 255, 255, 0.075);
+  --paper-grid-color: rgba(255, 255, 255, 0.06);
+  --paper-dot-color: rgba(255, 255, 255, 0.16);
+  --paper-margin-color: rgba(251, 113, 133, 0.35);
+
+  /* Sheet Elevation Shadow */
+  --sheet-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 18px 44px -10px rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================================================
+   2. BASE TYPOGRAPHY & GLOBAL RESETS
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 2000px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', 'Rubik', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  position: relative;
+}
+
+/* Theme Utility Classes */
+.bg-paper-theme { background-color: var(--bg-surface); }
+.bg-app-theme { background-color: var(--bg-page); }
+.bg-card-theme { background-color: var(--bg-surface); }
+.bg-card-selected-theme { background-color: var(--selected-bg); }
+.text-primary-theme { color: var(--text-primary); }
+.text-secondary-theme { color: var(--text-muted); }
+.border-subtle-theme { border-color: var(--border-subtle); }
+.border-strong-theme { border-color: var(--border-strong); }
+
+/* Interactive Elements */
+button,
+select,
+a,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   TABS CONTRAST
+   ========================================================================== */
+.note-tab:not(.active),
+#notepad-tabs-row .tab:not(.active-tab) {
+  background-color: var(--tab-inactive-bg) !important;
+  color: var(--tab-inactive-text) !important;
+}
+
+.note-tab.active,
+#notepad-tabs-row .tab.active-tab {
+  background-color: var(--tab-active-bg) !important;
+  color: var(--tab-active-text) !important;
+}
+
+/* ==========================================================================
+   CHECKLIST SYNTAX AND INTERACTIVE CHECKBOXES
+   ========================================================================== */
+.checklist-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  min-height: var(--line-height, 32px) !important;
+  line-height: var(--line-height, 32px) !important;
+}
+
+.note-checkbox,
+input[type="checkbox"].note-checkbox,
+.checklist-item input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  margin: 0 !important;
+  margin-right: 10px !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+  background-color: var(--bg-surface, #fff) !important;
+  border: 2px solid var(--border-strong, rgba(15, 23, 42, 0.25)) !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+  position: relative !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
+  accent-color: #10b981 !important;
+}
+
+.note-checkbox:hover,
+.checklist-item input[type="checkbox"]:hover {
+  border-color: #10b981 !important;
+}
+
+.note-checkbox:focus,
+.checklist-item input[type="checkbox"]:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25) !important;
+}
+
+.note-checkbox:checked,
+.checklist-item input[type="checkbox"]:checked {
+  background-color: #10b981 !important;
+  border-color: #10b981 !important;
+}
+
+.note-checkbox:checked::after,
+.checklist-item input[type="checkbox"]:checked::after {
+  content: "" !important;
+  display: block !important;
+  width: 5px !important;
+  height: 10px !important;
+  border: solid white !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(45deg) translate(-0.5px, -1px) !important;
+}
+
+.checklist-text {
+  display: inline !important;
+  vertical-align: baseline !important;
+  line-height: inherit !important;
+}
+
+.checklist-item.checked .checklist-text,
+.checklist-item:has(input[type="checkbox"]:checked) .checklist-text,
+.checklist-item input[type="checkbox"]:checked ~ .checklist-text {
+  text-decoration: line-through !important;
+  opacity: 0.6 !important;
+}
+
+/* ==========================================================================
+   STACKING CONTEXT, TOOLBAR & DROPDOWN OVERLAYS
+   ========================================================================== */
+#notepad-app-root,
+.workspace-main-column,
+#notepad-canvas-wrapper {
+  position: relative !important;
+  overflow: visible !important;
+  isolation: auto !important;
+}
+
+#notepad-tabs-row,
+.header-container {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 200 !important;
+  overflow: visible !important;
+  isolation: auto !important;
+}
+
+#editor-main-action-toolbar,
+.toolbar {
+  position: relative !important;
+  z-index: 100 !important;
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  isolation: auto !important;
+}
+
+.font-picker-container,
+.size-picker-container,
+.color-picker-container,
+.highlight-picker-container,
+.clear-confirm-container {
+  position: relative !important;
+  display: inline-flex !important;
+  z-index: 110 !important;
+}
+
+.font-picker-container:focus-within,
+.size-picker-container:focus-within,
+.color-picker-container:focus-within,
+.highlight-picker-container:focus-within,
+.clear-confirm-container:focus-within {
+  z-index: 120 !important;
+}
+
+.dropdown-menu,
+.font-dropdown-menu,
+.size-dropdown-menu,
+.color-palette-popup,
+#highlight-circles-palette,
+.clear-confirm-dropdown {
+  position: absolute !important;
+  top: calc(100% + 6px) !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.15) !important;
+}
+
+.font-dropdown-menu {
+  left: 0 !important;
+  right: auto !important;
+  overflow-y: auto !important;
+  max-height: 18rem !important;
+}
+
+.size-dropdown-menu {
+  left: 0 !important;
+  right: auto !important;
+  overflow-y: auto !important;
+  max-height: 18rem !important;
+}
+
+.color-palette-popup,
+#highlight-circles-palette {
+  overflow: visible !important;
+}
+
+.clear-confirm-dropdown {
+  right: 0 !important;
+  left: auto !important;
+  overflow: visible !important;
+}
+
+[dir="rtl"] .font-dropdown-menu,
+[dir="rtl"] .size-dropdown-menu {
+  left: auto !important;
+  right: 0 !important;
+}
+
+[dir="rtl"] .clear-confirm-dropdown {
+  left: 0 !important;
+  right: auto !important;
+}
+
+.topbar-dropdown-menu,
+.language-dropdown {
+  position: absolute !important;
+  top: calc(100% + 6px) !important;
+  right: 0 !important;
+  left: auto !important;
+  z-index: 9999 !important;
+  overflow: visible !important;
+  margin: 0 !important;
+}
+
+[dir="rtl"] .topbar-dropdown-menu,
+[dir="rtl"] .language-dropdown {
+  right: auto !important;
+  left: 0 !important;
+}
+
+.color-palette-popup,
+[id*="colorPalette"],
+#highlight-circles-palette {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+  width: max-content !important;
+}
+
+.color-swatch-circle {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 9999px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.dark .color-swatch-circle,
+[data-theme="dark"] .color-swatch-circle {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.color-swatch-circle:hover {
+  transform: scale(1.12);
+}
+
+/* ==========================================================================
+   WRITING CANVAS & CONTENTEDITABLE PLACEHOLDER
+   ========================================================================== */
+#notepad-paper-sheet {
+  background-color: var(--bg-surface);
+  box-shadow: var(--sheet-shadow);
+  border: 1px solid var(--border-subtle);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 800px !important;
+  position: relative !important;
+  z-index: 1 !important;
+  overflow: visible !important;
+  isolation: auto !important;
+}
+
+.notepad-editable,
+#notepad-text-input,
+#editor,
+.notepad,
+.notepad-page {
+  position: relative !important;
+  z-index: 1 !important;
+  background-color: transparent;
+  color: var(--text-primary);
+  outline: none;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 800px !important;
+}
+
+.notepad-editable:empty::before,
+#notepad-text-input:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-muted);
+  opacity: 0.55;
+  pointer-events: none;
+  display: block;
+}
+
+/* Highlight Marker Styling */
+mark, .highlight-marker, span[style*="background-color"] {
+  display: inline;
+  line-height: 1.15;
+  padding: 1px 4px;
+  margin: 0;
+  border-radius: 4px;
+  vertical-align: baseline;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Inline Code Styling inside Editor */
+.notepad-editable code,
+#notepad-text-input code {
+  font-family: 'JetBrains Mono', 'PT Mono', monospace;
+  font-size: 0.88em;
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  color: var(--brand-primary);
+}
+
+/* ==========================================================================
+   STATIONERY PAPER STYLES (RULED, COLLEGE, GRID, DOTTED, BLANK)
+   ========================================================================== */
+.notepad-editable,
+#notepad-text-input,
+#editor {
+  --editor-font-size: 16px;
+  --line-height-ratio: 2;
+  --line-height: calc(var(--editor-font-size) * var(--line-height-ratio));
+  --padding-top: 32px;
+  --baseline-ratio: 0.75;
+  --baseline-offset: calc(var(--padding-top) + (var(--line-height) * var(--baseline-ratio)));
+  font-size: var(--editor-font-size);
+  line-height: var(--line-height);
+  padding-top: var(--padding-top);
+  background-attachment: local !important;
+}
+
+.page-style-blank {
+  background-image: none !important;
+}
+
+.page-style-lined,
+.page-style-journal {
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(var(--line-height, 32px) - 1px),
+    var(--paper-line-color) calc(var(--line-height, 32px) - 1px)
+  ) !important;
+  background-size: 100% var(--line-height, 32px) !important;
+  background-position: 0 var(--baseline-offset, 56px) !important;
+  background-repeat: repeat-y !important;
+  background-attachment: local !important;
+}
+
+.page-style-college {
+  background-image:
+    linear-gradient(
+      to right,
+      transparent 79px,
+      var(--paper-margin-color, rgba(239, 68, 68, 0.45)) 79px,
+      var(--paper-margin-color, rgba(239, 68, 68, 0.45)) 80.5px,
+      transparent 80.5px
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(var(--line-height, 32px) - 1px),
+      var(--paper-line-color) calc(var(--line-height, 32px) - 1px)
+    ) !important;
+  background-size: 100% 100%, 100% var(--line-height, 32px) !important;
+  background-position: 0 0, 0 var(--baseline-offset, 56px) !important;
+  background-repeat: no-repeat, repeat-y !important;
+  background-attachment: local !important;
+  padding-left: 110px !important;
+  padding-right: 24px !important;
+}
+
+[dir="rtl"] .page-style-college,
+[data-lang="AR"] .page-style-college,
+.notepad-editable[dir="rtl"].page-style-college {
+  background-image:
+    linear-gradient(
+      to left,
+      transparent 79px,
+      var(--paper-margin-color, rgba(239, 68, 68, 0.45)) 79px,
+      var(--paper-margin-color, rgba(239, 68, 68, 0.45)) 80.5px,
+      transparent 80.5px
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(var(--line-height, 32px) - 1px),
+      var(--paper-line-color) calc(var(--line-height, 32px) - 1px)
+    ) !important;
+  background-size: 100% 100%, 100% var(--line-height, 32px) !important;
+  background-position: 0 0, 0 var(--baseline-offset, 56px) !important;
+  background-repeat: no-repeat, repeat-y !important;
+  background-attachment: local !important;
+  padding-left: 24px !important;
+  padding-right: 110px !important;
+  text-align: right !important;
+}
+
+[dir="rtl"] .notepad-editable,
+[dir="rtl"] #notepad-text-input,
+.notepad-editable[dir="rtl"] {
+  direction: rtl !important;
+  text-align: right;
+}
+
+[dir="ltr"] .notepad-editable,
+[dir="ltr"] #notepad-text-input,
+.notepad-editable[dir="ltr"] {
+  direction: ltr !important;
+}
+
+[dir="rtl"] .note-checkbox,
+[dir="rtl"] input[type="checkbox"].note-checkbox,
+[dir="rtl"] .checklist-item input[type="checkbox"],
+[data-lang="AR"] .note-checkbox,
+[data-lang="AR"] input[type="checkbox"].note-checkbox,
+[data-lang="AR"] .checklist-item input[type="checkbox"] {
+  margin-right: 0 !important;
+  margin-left: 10px !important;
+}
+
+.page-style-grid {
+  background-image:
+    linear-gradient(to right, var(--paper-grid-color) 1px, transparent 1px),
+    linear-gradient(
+      to bottom,
+      transparent calc(var(--line-height, 32px) - 1px),
+      var(--paper-grid-color) calc(var(--line-height, 32px) - 1px)
+    ) !important;
+  background-size: var(--line-height, 32px) var(--line-height, 32px) !important;
+  background-position: 0 var(--baseline-offset, 56px) !important;
+  background-repeat: repeat !important;
+  background-attachment: local !important;
+}
+
+.page-style-dotted {
+  background-image: radial-gradient(circle, var(--paper-dot-color) 1.25px, transparent 1.25px) !important;
+  background-size: var(--line-height, 32px) var(--line-height, 32px) !important;
+  background-position: calc(var(--editor-font-size) * 0.5) calc(var(--baseline-offset, 56px) - (var(--line-height, 32px) * 0.25)) !important;
+  background-repeat: repeat !important;
+  background-attachment: local !important;
+}
+
+/* ==========================================================================
+   SCROLLBARS & UTILITY HELPERS
+   ========================================================================== */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Full body and element scrollbar tokens */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.28);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.48);
+}
+
+#notepad-tabs-container::-webkit-scrollbar,
+.tabs-scroll-container::-webkit-scrollbar,
+.tabs-nav::-webkit-scrollbar {
+  height: 4px !important;
+  display: block !important;
+}
+
+#notepad-tabs-container::-webkit-scrollbar-track,
+.tabs-scroll-container::-webkit-scrollbar-track,
+.tabs-nav::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+#notepad-tabs-container::-webkit-scrollbar-thumb,
+.tabs-scroll-container::-webkit-scrollbar-thumb,
+.tabs-nav::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.28) !important;
+  border-radius: 9999px !important;
+}
+
+#notepad-tabs-container::-webkit-scrollbar-thumb:hover,
+.tabs-scroll-container::-webkit-scrollbar-thumb:hover,
+.tabs-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.48) !important;
+}
+
+#notepad-tabs-container,
+.tabs-scroll-container,
+.tabs-nav {
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin !important;
+}
+
+.note-tab {
+  flex-shrink: 0 !important;
+}
+
+/* ==========================================================================
+   STATUS COUNTER ACCENT COLORS
+   ========================================================================== */
+#status-word-count-icon,
+.status-counter-words svg {
+  color: #3b82f6 !important;
+}
+
+#status-line-count-icon,
+.status-counter-lines svg {
+  color: #10b981 !important;
+}
+
+#status-char-count-icon,
+.status-counter-chars svg {
+  color: #8b5cf6 !important;
+}
+
+/* ==========================================================================
+   BACK TO TOP FLOATING BUTTON (STANDALONE)
+   ========================================================================== */
+#back-to-top-btn {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 40 !important;
+}
+
+[dir="rtl"] #back-to-top-btn {
+  right: auto !important;
+  left: 24px !important;
+}
+
+/* ==========================================================================
+   STRICT MOBILE ARCHITECTURE REDESIGN (@media (max-width: 768px))
+   ========================================================================== */
+@media (max-width: 768px) {
+  #notepad-tabs-row {
+    padding: 8px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  #notepad-tabs-nav-bar {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  #notepad-tabs-nav-bar > div:first-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+  }
+
+  #notepad-header-right-buttons,
+  .header-right-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+    margin-left: 0 !important;
+  }
+
+  #notepad-tabs-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin !important;
+    padding-bottom: 4px !important;
+  }
+
+  /* Row 3 — Text Formatting Toolbar: full-width containment, momentum touch scrolling, no shrinking buttons */
+  .toolbar,
+  #editor-main-action-toolbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 6px 12px !important;
+    position: relative !important;
+    z-index: 50 !important;
+    scrollbar-width: thin !important;
+  }
+
+  .notepad-editable,
+  #notepad-text-input {
+    padding-top: 24px !important;
+    padding-bottom: 72px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    min-height: 70vh !important;
+  }
+
+  #notepad-status-bar {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px 12px !important;
+    gap: 0 !important;
+    width: 100% !important;
+  }
+
+  #status-counters-row {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    width: 100% !important;
+    text-align: center !important;
+    scrollbar-width: none !important;
+  }
+
+  #status-counters-row::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  #status-actions-row {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-top: 8px !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+  }
+
+  #back-to-top-btn {
+    bottom: 20px !important;
+    right: 16px !important;
+  }
+
+  [dir="rtl"] #back-to-top-btn {
+    right: auto !important;
+    left: 16px !important;
+  }
+}

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoLoginNotepad — Fast, Free Online Notepad | 100% Private</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Caveat:wght@600&family=Roboto+Slab:wght@600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg-page: #F6F7F9;
+      --bg-surface: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border-subtle: rgba(15, 23, 42, 0.08);
+      --paper-line: rgba(15, 23, 42, 0.085);
+      --paper-grid: rgba(15, 23, 42, 0.065);
+      --paper-dot: rgba(15, 23, 42, 0.18);
+      --paper-margin: rgba(244, 63, 94, 0.4);
+    }
+    .dark {
+      --bg-page: #090B10;
+      --bg-surface: #11141C;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --paper-line: rgba(255, 255, 255, 0.075);
+      --paper-grid: rgba(255, 255, 255, 0.06);
+      --paper-dot: rgba(255, 255, 255, 0.16);
+      --paper-margin: rgba(251, 113, 133, 0.4);
+    }
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    .notepad-canvas {
+      min-height: 700px;
+      outline: none;
+      line-height: 32px;
+      padding-top: 32px;
+      background-attachment: local;
+    }
+    .notepad-canvas:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-muted);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .style-lined {
+      background-image: linear-gradient(to bottom, transparent 31px, var(--paper-line) 31px);
+      background-size: 100% 32px;
+      background-position: 0 56px;
+      background-repeat: repeat-y;
+    }
+    .style-college {
+      background-image: 
+        linear-gradient(to right, transparent 79px, var(--paper-margin) 79px, var(--paper-margin) 81px, transparent 81px),
+        linear-gradient(to bottom, transparent 31px, var(--paper-line) 31px);
+      background-size: 100% 100%, 100% 32px;
+      background-position: 0 0, 0 56px;
+      background-repeat: no-repeat, repeat-y;
+      padding-left: 100px !important;
+    }
+    .style-grid {
+      background-image: 
+        linear-gradient(to right, var(--paper-grid) 1px, transparent 1px),
+        linear-gradient(to bottom, transparent 31px, var(--paper-grid) 31px);
+      background-size: 32px 32px;
+      background-position: 0 56px;
+      background-repeat: repeat;
+    }
+    .style-dotted {
+      background-image: radial-gradient(circle, var(--paper-dot) 1.25px, transparent 1.25px);
+      background-size: 32px 32px;
+      background-position: 8px 48px;
+      background-repeat: repeat;
+    }
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 32px;
+    }
+    .checklist-item input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #10B981;
+      cursor: pointer;
+    }
+    .checklist-item.checked span {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col transition-colors duration-200">
+
+  <!-- TOP HEADER / TABS -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-[#0D1017]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-xs">
+    <div class="flex items-center gap-3">
+      <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-xs">
+        NL
+      </div>
+      <span class="font-bold text-sm tracking-tight text-slate-900 dark:text-white">NoLoginNotepad</span>
+    </div>
+
+    <!-- TABS -->
+    <div id="tabs-container" class="flex items-center gap-1.5 overflow-x-auto max-w-xl flex-1 px-2">
+      <!-- Injected dynamically -->
+    </div>
+
+    <!-- HEADER RIGHT CONTROLS -->
+    <div class="flex items-center gap-2">
+      <button id="theme-btn" onclick="toggleTheme()" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs transition">
+        🌙
+      </button>
+      <button onclick="exportCurrent('txt')" class="px-2.5 py-1.5 rounded-lg bg-indigo-600 text-white font-semibold text-xs shadow-xs hover:bg-indigo-700 transition flex items-center gap-1">
+        Export
+      </button>
+    </div>
+  </header>
+
+  <!-- FORMATTING TOOLBAR -->
+  <div class="bg-slate-50 dark:bg-[#141822] border-b border-slate-200 dark:border-slate-800 px-4 py-1.5 flex items-center gap-1.5 overflow-x-auto text-xs sticky top-[53px] z-40 select-none">
+    <button onclick="document.execCommand('undo')" class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-800" title="Undo">↩</button>
+    <button onclick="document.execCommand('redo')" class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-800" title="Redo">↪</button>
+    <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
+    <select id="font-family-select" onchange="changeFontFamily(this.value)" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1 text-xs">
+      <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta (Default)</option>
+      <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
+      <option value="'Caveat', cursive">Caveat (Handwriting)</option>
+      <option value="'Roboto Slab', serif">Roboto Slab</option>
+    </select>
+
+    <select id="font-size-select" onchange="changeFontSize(this.value)" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1 text-xs">
+      <option value="14">14px</option>
+      <option value="16" selected>16px</option>
+      <option value="18">18px</option>
+      <option value="20">20px</option>
+      <option value="24">24px</option>
+    </select>
+
+    <select id="paper-style-select" onchange="changePaperStyle(this.value)" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1 text-xs">
+      <option value="blank">Blank Paper</option>
+      <option value="lined">Lined Paper</option>
+      <option value="college">College Ruled</option>
+      <option value="grid">Grid Paper</option>
+      <option value="dotted">Dotted Grid</option>
+    </select>
+
+    <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
+    <button onclick="format('bold')" class="font-bold px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800">B</button>
+    <button onclick="format('italic')" class="italic px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800">I</button>
+    <button onclick="format('underline')" class="underline px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800">U</button>
+    <button onclick="format('strikeThrough')" class="line-through px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800">S</button>
+
+    <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
+    <button onclick="format('justifyLeft')" class="px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800" title="Align Left">⯇</button>
+    <button onclick="format('justifyCenter')" class="px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800" title="Align Center">☰</button>
+    <button onclick="format('justifyRight')" class="px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800" title="Align Right">⯈</button>
+
+    <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
+    <button onclick="insertChecklist()" class="px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800 font-semibold" title="Checklist">☑</button>
+    <button onclick="format('insertUnorderedList')" class="px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800" title="Bullet List">•</button>
+    <button onclick="format('insertOrderedList')" class="px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800" title="Numbered List">1.</button>
+
+    <div class="w-px h-4 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
+    <button onclick="clearContent()" class="text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 px-2 py-1 rounded" title="Clear Note">🗑</button>
+  </div>
+
+  <!-- WRITING SURFACE -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col">
+    <div class="bg-white dark:bg-[#11141C] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm flex-1 flex flex-col overflow-hidden">
+      <div 
+        id="editor"
+        class="notepad-canvas flex-1 px-8 py-6 text-slate-900 dark:text-slate-100 style-blank"
+        contenteditable="true"
+        spellcheck="true"
+        data-placeholder="Start typing your note... No login required, everything is auto-saved locally."
+      ></div>
+
+      <!-- FOOTER STATUS DOCK -->
+      <footer class="border-t border-slate-200 dark:border-slate-800 px-6 py-2.5 bg-slate-50 dark:bg-[#141822] flex items-center justify-between text-xs text-slate-500">
+        <div class="flex items-center gap-3">
+          <span><strong id="stat-words" class="text-slate-800 dark:text-slate-200">0</strong> words</span>
+          <span>·</span>
+          <span><strong id="stat-chars" class="text-slate-800 dark:text-slate-200">0</strong> chars</span>
+          <span>·</span>
+          <span><strong id="stat-lines" class="text-slate-800 dark:text-slate-200">0</strong> lines</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 shadow-xs"></span>
+          <span id="save-status" class="text-emerald-600 dark:text-emerald-400 font-medium">Saved</span>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    // --- STATE MANAGEMENT ---
+    let notes = [];
+    let activeId = null;
+    let isDark = false;
+
+    function init() {
+      // Load Theme
+      const savedTheme = localStorage.getItem('nln_theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        isDark = true;
+        document.documentElement.classList.add('dark');
+        document.getElementById('theme-btn').textContent = '☀️';
+      }
+
+      // Load Notes
+      try {
+        const stored = localStorage.getItem('nln_notes');
+        if (stored) notes = JSON.parse(stored);
+      } catch (e) {}
+
+      if (!notes || notes.length === 0) {
+        notes = [{
+          id: 'note_' + Date.now(),
+          title: 'Welcome Note',
+          content: '<div>Welcome to <strong>NoLoginNotepad</strong>!</div><div><br></div><div>All your text is saved automatically to your device. No login, no servers, zero telemetry.</div>',
+          pageStyle: 'blank'
+        }];
+      }
+
+      activeId = notes[0].id;
+      renderTabs();
+      loadActiveNote();
+
+      const editor = document.getElementById('editor');
+      editor.addEventListener('input', onEditorInput);
+      editor.addEventListener('click', onEditorClick);
+    }
+
+    function toggleTheme() {
+      isDark = !isDark;
+      document.documentElement.classList.toggle('dark', isDark);
+      localStorage.setItem('nln_theme', isDark ? 'dark' : 'light');
+      document.getElementById('theme-btn').textContent = isDark ? '☀️' : '🌙';
+    }
+
+    function renderTabs() {
+      const container = document.getElementById('tabs-container');
+      container.innerHTML = '';
+
+      notes.forEach((n) => {
+        const isActive = n.id === activeId;
+        const tab = document.createElement('div');
+        tab.className = `flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer border shrink-0 transition ${
+          isActive 
+            ? 'bg-white dark:bg-[#1A1F2C] text-indigo-600 dark:text-indigo-400 border-indigo-500/30 shadow-xs'
+            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-transparent hover:bg-slate-200'
+        }`;
+        tab.innerHTML = `
+          <span class="w-1.5 h-1.5 rounded-full ${isActive ? 'bg-emerald-500' : 'bg-slate-400'}"></span>
+          <span class="truncate max-w-[120px]">${n.title || 'Untitled'}</span>
+          ${notes.length > 1 ? `<button onclick="closeNote('${n.id}', event)" class="hover:text-rose-500 ml-1">✕</button>` : ''}
+        `;
+        tab.onclick = () => selectNote(n.id);
+        container.appendChild(tab);
+      });
+
+      const addBtn = document.createElement('button');
+      addBtn.className = 'w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 dark:text-slate-300 flex items-center justify-center font-bold text-sm shrink-0';
+      addBtn.textContent = '+';
+      addBtn.title = 'New Note';
+      addBtn.onclick = createNewNote;
+      container.appendChild(addBtn);
+    }
+
+    function selectNote(id) {
+      saveCurrentNoteSync();
+      activeId = id;
+      renderTabs();
+      loadActiveNote();
+    }
+
+    function createNewNote() {
+      saveCurrentNoteSync();
+      const newNote = {
+        id: 'note_' + Date.now(),
+        title: 'Untitled Note ' + (notes.length + 1),
+        content: '',
+        pageStyle: 'blank'
+      };
+      notes.push(newNote);
+      activeId = newNote.id;
+      renderTabs();
+      loadActiveNote();
+      document.getElementById('editor').focus();
+    }
+
+    function closeNote(id, event) {
+      event.stopPropagation();
+      if (notes.length <= 1) return;
+      notes = notes.filter(n => n.id !== id);
+      if (activeId === id) {
+        activeId = notes[0].id;
+      }
+      persistNotes();
+      renderTabs();
+      loadActiveNote();
+    }
+
+    function loadActiveNote() {
+      const current = notes.find(n => n.id === activeId);
+      const editor = document.getElementById('editor');
+      if (current) {
+        editor.innerHTML = current.content || '';
+        changePaperStyle(current.pageStyle || 'blank', false);
+        document.getElementById('paper-style-select').value = current.pageStyle || 'blank';
+      }
+      updateStats();
+    }
+
+    function saveCurrentNoteSync() {
+      const current = notes.find(n => n.id === activeId);
+      if (current) {
+        const editor = document.getElementById('editor');
+        current.content = editor.innerHTML;
+        persistNotes();
+      }
+    }
+
+    let saveTimer = null;
+    function onEditorInput() {
+      const status = document.getElementById('save-status');
+      status.textContent = 'Saving...';
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        saveCurrentNoteSync();
+        status.textContent = 'Saved';
+      }, 300);
+      updateStats();
+    }
+
+    function onEditorClick(e) {
+      if (e.target && e.target.type === 'checkbox') {
+        const item = e.target.closest('.checklist-item');
+        if (item) {
+          item.classList.toggle('checked', e.target.checked);
+          onEditorInput();
+        }
+      }
+    }
+
+    function updateStats() {
+      const text = document.getElementById('editor').innerText || '';
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const chars = text.length;
+      const lines = text ? text.split('\n').length : 0;
+
+      document.getElementById('stat-words').textContent = words;
+      document.getElementById('stat-chars').textContent = chars;
+      document.getElementById('stat-lines').textContent = lines;
+    }
+
+    function persistNotes() {
+      try {
+        localStorage.setItem('nln_notes', JSON.stringify(notes));
+      } catch (e) {}
+    }
+
+    function format(cmd, val = null) {
+      document.execCommand(cmd, false, val);
+      document.getElementById('editor').focus();
+      onEditorInput();
+    }
+
+    function changeFontFamily(val) {
+      document.getElementById('editor').style.fontFamily = val;
+    }
+
+    function changeFontSize(val) {
+      document.getElementById('editor').style.fontSize = val + 'px';
+      document.getElementById('editor').style.lineHeight = (val * 2) + 'px';
+    }
+
+    function changePaperStyle(val, updateNote = true) {
+      const editor = document.getElementById('editor');
+      editor.classList.remove('style-blank', 'style-lined', 'style-college', 'style-grid', 'style-dotted');
+      editor.classList.add('style-' + val);
+      if (updateNote) {
+        const current = notes.find(n => n.id === activeId);
+        if (current) current.pageStyle = val;
+        persistNotes();
+      }
+    }
+
+    function insertChecklist() {
+      const html = '<div class="checklist-item"><input type="checkbox"><span>&nbsp;Task item</span></div>';
+      document.execCommand('insertHTML', false, html);
+      onEditorInput();
+    }
+
+    function clearContent() {
+      if (confirm('Clear all contents of this note?')) {
+        document.getElementById('editor').innerHTML = '';
+        onEditorInput();
+      }
+    }
+
+    function exportCurrent(format) {
+      const current = notes.find(n => n.id === activeId);
+      if (!current) return;
+      const text = document.getElementById('editor').innerText || '';
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (current.title || 'note').replace(/\s+/g, '_') + '.txt';
+      a.click();
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
